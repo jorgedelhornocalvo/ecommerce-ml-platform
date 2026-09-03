@@ -16,8 +16,8 @@ of ~100k orders with products, customers, delivery dates, and written reviews.
 
 ## Roadmap
 - [x] Phase 0 — Problem definition and data collection
-- [ ] Phase 1 — Relational database design and SQL analysis
-- [ ] Phase 2 — Exploratory data analysis
+- [x] Phase 1 — Relational database design and SQL analysis
+- [x] Phase 2 — Exploratory data analysis
 - [ ] Phase 3 — Machine learning: delivery-delay prediction
 - [ ] Phase 4 — Deep learning: review sentiment (NLP)
 - [ ] Phase 5 — Web app (Streamlit)
@@ -112,6 +112,8 @@ erDiagram
     products ||--o{ order_items : has
     orders ||--o{ order_items : has
     orders ||--o{ order_payments : has
+```
+
 ## Exploratory Data Analysis
 
 An exploratory analysis of the dataset ([notebook here](notebooks/02_exploratory_analysis.ipynb)) surfaced several patterns that shape the modeling phases:
@@ -121,8 +123,3 @@ An exploratory analysis of the dataset ([notebook here](notebooks/02_exploratory
 - **Delivery delays strongly hurt satisfaction** — on-time orders average 4.29 stars versus 2.57 for late ones. This connects the two models: predicting delays helps anticipate unhappy customers.
 - **Order volume grew through 2017 and stabilized in 2018**, with the apparent drop at the end reflecting the end of the dataset rather than a real decline.
 - **Top categories** are home, health & beauty, and sports & leisure, indicating a general-purpose store.
-
-
-```
-## Author
-Jorge del Horno Calvo
