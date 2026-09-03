@@ -30,5 +30,88 @@ Python · SQLite · pandas · scikit-learn · PyTorch · Streamlit · Git & GitH
 ## Status
 🚧 In progress — started September 2026.
 
+## Database Design
+
+The database is built with SQLite and contains 9 related tables modeling a real e-commerce operation. Primary keys uniquely identify records where the data allows it (orders, customers, products, sellers, and category translations). Foreign keys formalize the relationships between tables: reviews, order items, and payments all reference their parent order, and order items also reference the product catalog.
+
+Some tables intentionally omit a single-column primary key, reflecting the real structure of the data: an order can have several items, payments, or reviews, so columns like `order_id` legitimately repeat in those tables. This is a deliberate design decision based on the actual data rather than an oversight.
+
+```mermaid
+erDiagram
+    orders {
+        TEXT order_id PK
+        TEXT customer_id
+        TEXT order_status
+        TEXT order_purchase_timestamp
+        TEXT order_approved_at
+        TEXT order_delivered_carrier_date
+        TEXT order_delivered_customer_date
+        TEXT order_estimated_delivery_date
+    }
+    customers {
+        TEXT customer_id PK
+        TEXT customer_unique_id
+        INTEGER customer_zip_code_prefix
+        TEXT customer_city
+        TEXT customer_state
+    }
+    reviews {
+        TEXT review_id
+        TEXT order_id
+        INTEGER review_score
+        TEXT review_comment_title
+        TEXT review_comment_message
+        TEXT review_creation_date
+        TEXT review_answer_timestamp
+    }
+    products {
+        TEXT product_id PK
+        TEXT product_category_name
+        REAL product_name_lenght
+        REAL product_description_lenght
+        REAL product_photos_qty
+        REAL product_weight_g
+        REAL product_length_cm
+        REAL product_height_cm
+        REAL product_width_cm
+    }
+    order_items {
+        TEXT order_id
+        INTEGER order_item_id
+        TEXT product_id
+        TEXT seller_id
+        TEXT shipping_limit_date
+        REAL price
+        REAL freight_value
+    }
+    sellers {
+        TEXT seller_id PK
+        INTEGER seller_zip_code_prefix
+        TEXT seller_city
+        TEXT seller_state
+    }
+    order_payments {
+        TEXT order_id
+        INTEGER payment_sequential
+        TEXT payment_type
+        INTEGER payment_installments
+        REAL payment_value
+    }
+    geolocation {
+        INTEGER geolocation_zip_code_prefix
+        REAL geolocation_lat
+        REAL geolocation_lng
+        TEXT geolocation_city
+        TEXT geolocation_state
+    }
+    category_translation {
+        TEXT product_category_name PK
+        TEXT product_category_name_english
+    }
+    orders ||--o{ reviews : has
+    products ||--o{ order_items : has
+    orders ||--o{ order_items : has
+    orders ||--o{ order_payments : has
+```
 ## Author
 Jorge del Horno Calvo
